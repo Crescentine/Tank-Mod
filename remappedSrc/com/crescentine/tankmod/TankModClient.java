@@ -7,7 +7,6 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.rendereregistry.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
-import net.fabricmc.fabric.impl.client.renderer.registry.EntityRendererRegistryImpl;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.render.entity.FlyingItemEntityRenderer;
@@ -60,9 +59,8 @@ public class TankModClient implements ClientModInitializer {
         EntityRendererRegistry.INSTANCE.register(TankMod.ShellEntityType, (context) ->
                 new FlyingItemEntityRenderer(context));
         receiveEntityPacket();
-        EntityRendererRegistryImpl.INSTANCE.register(TankMod.TANK_ENTITY_TYPE, ctx ->
+        EntityRendererRegistry.INSTANCE.register(TankMod.TANK_ENTITY_TYPE, ctx ->
                 new TankEntityRenderer(ctx, new TankEntityModel()));
-
 
     }
 }
