@@ -3,17 +3,17 @@
   "id": "trajantanks",
   "version": "${version}",
 
-  "name": "Tank Mod 1.17",
-  "description": "Mod for 1.17 Fabric adding working Tanks to Minecraft",
+  "name": "Tank Mod 1.18",
+  "description": "Mod for 1.18 Fabric (and other versions) adding working Tanks to Minecraft",
   "authors": [
     "Crescentine/Trajan"
   ],
   "contact": {
-    "homepage": "https://fabricmc.net/",
-    "sources": "https://github.com/FabricMC/fabric-example-mod"
+    "homepage": "https://www.curseforge.com/minecraft/mc-mods/trajans-tanks-fabric-wip",
+    "sources": "https://github.com/Crescentine/Tank-Mod-1.17.1"
   },
 
-  "license": "CC0-1.0",
+  "license": "MIT",
   "icon": "assets/modid/icon.png",
 
   "environment": "*",
@@ -34,10 +34,9 @@
     "fabricloader": ">=0.11.3",
     "fabric-key-binding-api-v1": "*",
     "fabric": "*",
-    "minecraft": "*",
+    "minecraft": "1.18.*",
     "java": ">=16"
   },
   "suggests": {
-    "another-mod": "*"
   }
 }
