@@ -20,7 +20,7 @@ repositories {
 }
 
 dependencies {
-	modImplementation 'software.bernie.geckolib:geckolib-fabric-1.17:3.0.4:dev'
+	modImplementation 'software.bernie.geckolib:geckolib-fabric-1.18:3.0.4:dev'
 	// To change the versions see the gradle.properties file
 	minecraft "com.mojang:minecraft:21w39a"
 	mappings "net.fabricmc:yarn:21w39a+build.4:v2"
