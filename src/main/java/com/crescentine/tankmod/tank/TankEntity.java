@@ -11,14 +11,18 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.passive.PigEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.text.LiteralText;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Arm;
 import net.minecraft.util.Hand;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -35,7 +39,10 @@ import java.util.Set;
 
 public class TankEntity extends PigEntity implements IAnimatable {
     private final AnimationFactory factory = new AnimationFactory(this);
-
+    private final int cooldown = 100;
+    
+    private int time = cooldown;
+    
     public TankEntity(EntityType<?> entityType, World world) {
         super((EntityType<? extends PigEntity>) entityType, world);
     }
@@ -79,8 +86,8 @@ public class TankEntity extends PigEntity implements IAnimatable {
     @Override
     protected void removePassenger(Entity entity) {
         super.removePassenger(entity);
-        if (entity instanceof PlayerEntity player) {
-            player.setInvisible(false);
+        if (entity instanceof PlayerEntity) {
+        	entity.setInvisible(false);
         }
     }
 
@@ -206,4 +213,50 @@ public class TankEntity extends PigEntity implements IAnimatable {
     protected SoundEvent getSwimSound() {
         return null;
     }
+    
+    public void tick() {
+    	
+    	super.tick();
+    	
+    	if(time < cooldown) time++;
+    	
+    }
+    
+    public boolean shoot(PlayerEntity player) {
+    	
+    	PlayerInventory inv = player.getInventory();
+    	
+    	int slot = inv.getSlotWithStack(new ItemStack(TankMod.ShellEntityItem));
+    	
+    	if(slot == -1) {
+    		player.sendMessage(new LiteralText("§cYou don't have any ammo !"), true);
+    		world.playSound(null, player.getBlockPos(), SoundEvents.BLOCK_DISPENSER_FAIL, SoundCategory.BLOCKS, 1.0f, 1.0f);
+    		return false;
+    	}
+    	
+    	if(time < cooldown) {
+    		player.sendMessage(new LiteralText("§7Please wait " + (cooldown-time)/20 + " s !"), true);
+    		world.playSound(null, player.getBlockPos(), SoundEvents.BLOCK_DISPENSER_FAIL, SoundCategory.BLOCKS, 1.0f, 1.0f);
+    		return false;
+    	}
+    	
+    	ShellEntity shellEntity = new ShellEntity(world, player);
+        shellEntity.setProperties(player, player.getPitch(), player.getYaw(), 0.0F, 1.5F, 0F);
+        
+        double distance = 4.0D;
+        
+        double x = -MathHelper.sin(player.getYaw() / 180.0F * (float) Math.PI) * distance;
+    	double z = MathHelper.cos(player.getYaw() / 180.0F * (float) Math.PI) * distance;
+        
+        shellEntity.setPos(shellEntity.getX() + x, shellEntity.getY()-1.0D, shellEntity.getZ() + z);
+        world.spawnEntity(shellEntity);
+        
+        inv.getStack(slot).decrement(1);
+        
+        time = 0;
+		
+        return true;
+    	
+    }
+    
 }

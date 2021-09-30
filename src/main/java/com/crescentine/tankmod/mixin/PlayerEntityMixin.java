@@ -25,7 +25,7 @@ import software.bernie.example.registry.ItemRegistry;
 @Mixin(PlayerEntity.class)
 public class PlayerEntityMixin {
 
-    @Nullable
+   /* @Nullable
     private Entity trajanstanks$vehicle;
     private ShellEntity trajanstanks$shellEntity;
     @Inject(at = @At("HEAD"), method =
@@ -38,5 +38,5 @@ public class PlayerEntityMixin {
                 playerEntity.getEntityWorld().spawnEntity(trajanstanks$shellEntity);
             }
         }
-    }
+    }*/
 }
